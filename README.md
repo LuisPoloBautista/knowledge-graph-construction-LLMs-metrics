@@ -12,6 +12,7 @@ This repository, KG-LLM-Metrics, provides a comprehensive workflow for building 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Characteristics</h2>
 
 The proposal is divided into nine sections: 
+
 1) Corpus selection
 2) Pre-processing
 3) Topic modeling
@@ -24,6 +25,47 @@ The proposal is divided into nine sections:
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Metrics</h2>
 
+The metrics used were the following:
+
+1. Number of nodes and edges
+2. Percentage of overlap and differences
+3. Frequency of specific types of entities
+4. Clustering coefficient
+5. Density
+6. Average degree
+7. Percentage of hallucination
+8. Redundancy
+9. Contextual relevance
+
+<h2 style="font-size: 2rem; margin-bottom: 20px;">Large Language Models</h2>
+
+We use the following LLMs for knowledge extraction
+
+<h2 style="font-size: 2rem; margin-bottom: 20px;">Llama 3.1</h2
+
+![Llama 3.1](https://scontent-qro1-1.xx.fbcdn.net/v/t39.2365-6/452380335_1646136526224716_2406884886416151566_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=xYtcuUS6xJEQ7kNvgHLbnxw&_nc_zt=14&_nc_ht=scontent-qro1-1.xx&_nc_gid=AHYq6vs3DCaLBuf_gFuWYyG&oh=00_AYD1jxzc5BNFOSG6nagL0f2bFQn_Ra7U3wqhXS_bj7AtOQ&oe=67AE1B06)
+
+
+```python
+def process_text(text):
+    response = ollama.chat(model='llama3.1', messages=[....])
+    return response['message']['content']
+
+def process_df(df, text_column, output_column):
+    results = []
+    for index, row in df.iterrows():
+        text = row[text_column]
+        result = process_text(text)
+        results.append(result)
+
+        del text
+        del result
+        gc.collect()
+
+        print(f"Procesado fila {index + 1}/{len(df)}")
+
+    df[output_column] = results
+    return df
 
 
 

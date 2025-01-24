@@ -198,3 +198,8 @@ for i in range(0, len(df), batch_size):
 ```
 
 
+<h2 style="font-size: 2rem; margin-bottom: 20px;">Licence</h2>
+
+KG-LLM-Metrics is licensed under GPL-3.0 - see the LICENSE.md file for details.
+
+

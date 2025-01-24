@@ -55,7 +55,7 @@ Libraries: <a href="https://ollama.com/">ollama</a>, pandas, gc, NVIDIA GPU of a
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Llama 3.1</h2
 
-Model Configuration: Edit the model in ollama.chat to adjust it to your needs. For example, you can replace llama3.1 with any other supported model.
+Model Configuration: Edit the model in ollama.chat to adjust it to your needs. For example, you can replace llama3.1 with any other supported model. For more information about the model, please consult <a href="https://ollama.com/library/llama3.1">here</a>
 
 ```python
 def process_text(text):
@@ -82,7 +82,7 @@ def process_df(df, text_column, output_column):
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Gemma 2</h2>
 
-Similar to the case of Llama 3.1
+Similar to the case of Llama 3.1. For more information about the model, please consult <a href="https://ollama.com/library/llama3.1](https://ollama.com/library/gemma2">here</a>
 
 ```python
 def process_text(text):
@@ -109,7 +109,7 @@ def process_df(df, text_column, output_column):
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">GPT-4o</h2>
 
-For this model, it is necessary to have an API Key to be able to process the information.
+For this model, it is necessary to have an API Key to be able to process the information. For more information about the model, please consult <a href="https://huggingface.co/allenai/OLMo-7B](https://openai.com/index/hello-gpt-4o/">here</a>
 
 ```python
 
@@ -138,31 +138,63 @@ def obtener_tripletas(texto):
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">OLMO</h2>
 
-For this model, it is necessary to have an API Key to be able to process the information.
+For more information about the model, please consult <a href="https://huggingface.co/allenai/OLMo-7B">here</a>
 
 ```python
 
-client = OpenAI(
-    api_key="YOU API KEY")
+from hf_olmo import OLMoForCausalLM, OLMoTokenizerFast  # pip install ai2-olmo
+import torch
+import pandas as pd
+import gc
 
-input_csv = 'C:\Users\..'
+torch.random.manual_seed(0)
+model = OLMoForCausalLM.from_pretrained(
+    "allenai/OLMo-7B",
+    #revision="step1000-tokens4B"
+    device_map="cuda",
+    torch_dtype="auto",
+)
 
-output_csv = 'C:\Users\..'
+tokenizer = OLMoTokenizerFast.from_pretrained("allenai/OLMo-7B")
 
+df = pd.read_csv('C:\Users\..')
 
-def obtener_tripletas(texto):
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": f"""....""",}],
-        model="gpt-4o",
-        #messages=[{"role": "user", "content": prompt}],
-        max_tokens=750,
-        n=1,
-        stop=None,
-        temperature=0.5,
-    )
+pipe = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+)
 
-    tripletas_json = response.choices[0].message.content
-    return tripletas_json
+generation_args = {
+    "max_new_tokens": 1400,
+    "return_full_text": False,
+    "temperature": 0.7,  
+    "do_sample": True,    
+}
+
+batch_size = 5  
+
+for i in range(0, len(df), batch_size):
+    batch = df[i: i + batch_size]
+    total_rows = len(batch)
+    
+    for idx, row in batch.iterrows():
+        text = row['texto_completo']  
+
+        
+        input_tokens = tokenizer.encode(text)
+        if len(input_tokens) > 4096:
+            print(f"Texto en fila {idx} excede la longitud máxima de tokens. Se truncará.")
+            text = tokenizer.decode(input_tokens[:4096])  
+
+        
+        messages = [
+            {"role": "system",
+             "content": f"""..."""}
+        ]
+
+ 
+        output = pipe(messages, **generation_args)
 ```
 
 

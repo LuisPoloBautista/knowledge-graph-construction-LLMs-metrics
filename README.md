@@ -39,12 +39,16 @@ The metrics used were the following:
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Large Language Models</h2>
 
-We use the following LLMs for knowledge extraction
+We use the following LLMs for knowledge extraction. Scripts allow you to process data in a DataFrame, generating a new column with the results of the LLM model. Make sure you meet the dependencies before running it.
+
+Requirements
+
+Python 3.9 or higher.
+Libraries: <a href="https://ollama.com/">ollama</a>, pandas, gc, NVIDIA GPU of at least 16GB recommended
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Llama 3.1</h2
 
-![Llama 3.1](https://scontent-qro1-1.xx.fbcdn.net/v/t39.2365-6/452380335_1646136526224716_2406884886416151566_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=xYtcuUS6xJEQ7kNvgHLbnxw&_nc_zt=14&_nc_ht=scontent-qro1-1.xx&_nc_gid=AHYq6vs3DCaLBuf_gFuWYyG&oh=00_AYD1jxzc5BNFOSG6nagL0f2bFQn_Ra7U3wqhXS_bj7AtOQ&oe=67AE1B06)
-
+Model Configuration: Edit the model in ollama.chat to adjust it to your needs. For example, you can replace llama3.1 with any other supported model.
 
 ```python
 def process_text(text):
@@ -66,6 +70,33 @@ def process_df(df, text_column, output_column):
 
     df[output_column] = results
     return df
+```
 
+
+<h2 style="font-size: 2rem; margin-bottom: 20px;">Gemma 2</h2>
+
+Similar to the case of Llama 3.1
+
+```python
+def process_text(text):
+    response = ollama.chat(model='gemma2', messages=[....])
+    return response['message']['content']
+
+def process_df(df, text_column, output_column):
+    results = []
+    for index, row in df.iterrows():
+        text = row[text_column]
+        result = process_text(text)
+        results.append(result)
+
+        del text
+        del result
+        gc.collect()
+
+        print(f"Procesado fila {index + 1}/{len(df)}")
+
+    df[output_column] = results
+    return df
+```
 
 

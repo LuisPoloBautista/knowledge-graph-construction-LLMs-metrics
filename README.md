@@ -23,6 +23,13 @@ The proposal is divided into nine sections:
 8) Word sense disambiguation
 9) Knowledge graph creation
 
+As shown in the following image
+
+<div align="center">
+    <img src="img/Figure1.png" alt="logo" style="border-radius: 50 px;">
+</div>
+
+
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Metrics</h2>
 
 The metrics used were the following:
@@ -97,6 +104,65 @@ def process_df(df, text_column, output_column):
 
     df[output_column] = results
     return df
+```
+
+
+<h2 style="font-size: 2rem; margin-bottom: 20px;">GPT-4o</h2>
+
+For this model, it is necessary to have an API Key to be able to process the information.
+
+```python
+
+client = OpenAI(
+    api_key="YOU API KEY")
+
+input_csv = 'C:\Users\..'
+
+output_csv = 'C:\Users\..'
+
+
+def obtener_tripletas(texto):
+    response = client.chat.completions.create(
+        messages=[{"role": "user", "content": f"""....""",}],
+        model="gpt-4o",
+        #messages=[{"role": "user", "content": prompt}],
+        max_tokens=750,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    tripletas_json = response.choices[0].message.content
+    return tripletas_json
+```
+
+<h2 style="font-size: 2rem; margin-bottom: 20px;">OLMO</h2>
+
+For this model, it is necessary to have an API Key to be able to process the information.
+
+```python
+
+client = OpenAI(
+    api_key="YOU API KEY")
+
+input_csv = 'C:\Users\..'
+
+output_csv = 'C:\Users\..'
+
+
+def obtener_tripletas(texto):
+    response = client.chat.completions.create(
+        messages=[{"role": "user", "content": f"""....""",}],
+        model="gpt-4o",
+        #messages=[{"role": "user", "content": prompt}],
+        max_tokens=750,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    tripletas_json = response.choices[0].message.content
+    return tripletas_json
 ```
 
 

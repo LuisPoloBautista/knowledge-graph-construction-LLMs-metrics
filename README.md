@@ -48,7 +48,7 @@ Requirements
 Python 3.9 or higher.
 Libraries: <a href="https://ollama.com/">ollama</a>, pandas, gc, NVIDIA GPU of at least 16GB recommended
 
-<h2 style="font-size: 2rem; margin-bottom: 20px;">LLM from Ollama</h2>
+<h2 style="font-size: 2rem; margin-bottom: 20px;">LLMs from Ollama</h2>
 
 Model Configuration: To change the LLMs, you can replace llama3.1 with any other compatible model in Ollama. For more information about the model, see<a href="https://ollama.com/library/llama3.1">here</a>
 
@@ -73,34 +73,6 @@ def process_df(df, text_column, output_column):
     df[output_column] = results
     return df
 ```
-
-
-<h2 style="font-size: 2rem; margin-bottom: 20px;">Gemma 2</h2>
-
-Similar to the case of Llama 3.1. For more information about the model, please consult <a href="https://ollama.com/library/llama3.1](https://ollama.com/library/gemma2">here</a>
-
-```python
-def process_text(text):
-    response = ollama.chat(model='gemma2', messages=[....])
-    return response['message']['content']
-
-def process_df(df, text_column, output_column):
-    results = []
-    for index, row in df.iterrows():
-        text = row[text_column]
-        result = process_text(text)
-        results.append(result)
-
-        del text
-        del result
-        gc.collect()
-
-        print(f"Procesado fila {index + 1}/{len(df)}")
-
-    df[output_column] = results
-    return df
-```
-
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">GPT-4o</h2>
 
@@ -131,66 +103,6 @@ def obtener_tripletas(texto):
     return tripletas_json
 ```
 
-<h2 style="font-size: 2rem; margin-bottom: 20px;">OLMO</h2>
-
-For more information about the model, please consult <a href="https://huggingface.co/allenai/OLMo-7B">here</a>
-
-```python
-
-from hf_olmo import OLMoForCausalLM, OLMoTokenizerFast  # pip install ai2-olmo
-import torch
-import pandas as pd
-import gc
-
-torch.random.manual_seed(0)
-model = OLMoForCausalLM.from_pretrained(
-    "allenai/OLMo-7B",
-    #revision="step1000-tokens4B"
-    device_map="cuda",
-    torch_dtype="auto",
-)
-
-tokenizer = OLMoTokenizerFast.from_pretrained("allenai/OLMo-7B")
-
-df = pd.read_csv('C:\Users\..')
-
-pipe = pipeline(
-    "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-)
-
-generation_args = {
-    "max_new_tokens": 1400,
-    "return_full_text": False,
-    "temperature": 0.7,  
-    "do_sample": True,    
-}
-
-batch_size = 5  
-
-for i in range(0, len(df), batch_size):
-    batch = df[i: i + batch_size]
-    total_rows = len(batch)
-    
-    for idx, row in batch.iterrows():
-        text = row['texto_completo']  
-
-        
-        input_tokens = tokenizer.encode(text)
-        if len(input_tokens) > 4096:
-            print(f"Texto en fila {idx} excede la longitud máxima de tokens. Se truncará.")
-            text = tokenizer.decode(input_tokens[:4096])  
-
-        
-        messages = [
-            {"role": "system",
-             "content": f"""..."""}
-        ]
-
- 
-        output = pipe(messages, **generation_args)
-```
 
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Licence</h2>

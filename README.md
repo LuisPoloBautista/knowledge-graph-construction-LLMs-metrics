@@ -41,7 +41,7 @@ The metrics used were the following:
 
 <h2 style="font-size: 2rem; margin-bottom: 20px;">Large Language Models</h2>
 
-We use the following LLMs for knowledge extraction: \textit{Llama 3.1} (8B)\footnote{https://ai.meta.com/blog/meta-llama-3-1/}, \textit{Gemma 2} (9B)\footnote{https://developers.googleblog.com/es/gemma-explained-new-in-gemma-2/}, \textit{OLMO} (7B)\footnote{https://allenai.org/olmo}, and \textit{GPT-4o} \footnote{https://openai.com/index/hello-gpt-4o/}. The script allows you to process data in a DataFrame, generating a new column with the results of the LLM model. Make sure you meet the dependencies before running it.
+We use the following LLMs for knowledge extraction: Llama 3.1 (8B) (https://ai.meta.com/blog/meta-llama-3-1/), Gemma 2 (9B) (https://developers.googleblog.com/es/gemma-explained-new-in-gemma-2/), OLMO (7B) (https://allenai.org/olmo), and GPT-4o (https://openai.com/index/hello-gpt-4o/). The script allows you to process data in a DataFrame, generating a new column with the results of the LLM model. Make sure you meet the dependencies before running it.
 
 Requirements
 

@@ -48,9 +48,9 @@ Requirements
 Python 3.9 or higher.
 Libraries: <a href="https://ollama.com/">ollama</a>, pandas, gc, NVIDIA GPU of at least 16GB recommended
 
-<h2 style="font-size: 2rem; margin-bottom: 20px;">Llama 3.1</h2
+<h2 style="font-size: 2rem; margin-bottom: 20px;">LLM from Ollama</h2>
 
-Model Configuration: Edit the model in ollama.chat to adjust it to your needs. For example, you can replace llama3.1 with any other supported model. For more information about the model, please consult <a href="https://ollama.com/library/llama3.1">here</a>
+Model Configuration: To change the LLMs, you can replace llama3.1 with any other compatible model in Ollama. For more information about the model, see<a href="https://ollama.com/library/llama3.1">here</a>
 
 ```python
 def process_text(text):

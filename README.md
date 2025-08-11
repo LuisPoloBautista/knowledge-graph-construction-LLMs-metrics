@@ -1,9 +1,4 @@
 <div align="center">
-    <img src="img/KG-LLM-Metrics.png" alt="logo" style="border-radius: 50 px;">
-</div>
-
-
-<div align="center">
     <h1>Workflow for knowledge graph-construction using LLMs and metrics</h1>
 </div>
 

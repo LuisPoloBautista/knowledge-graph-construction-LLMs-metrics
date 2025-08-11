@@ -21,7 +21,7 @@ The proposal is divided into nine sections:
 As shown in the following image
 
 <div align="center">
-    <img src="img/Figure1.png" alt="logo" style="border-radius: 50 px;">
+    <img src="img/Captura desde 2025-08-11 13-27-11.png style="border-radius: 50 px;">
 </div>
 
 
